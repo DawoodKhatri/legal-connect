@@ -8,7 +8,7 @@ import { errorResponse, successResponse } from "@/utils/sendResponse";
 export const GET = async (req) => {
   try {
     const clientId = await checkAuth(req);
-    if (!clientId) return errorResponse(403, "Please login first");
+    if (!clientId) return errorResponse(403, "Please login first!");
 
     await connectDB();
 
