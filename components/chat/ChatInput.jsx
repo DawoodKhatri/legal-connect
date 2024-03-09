@@ -1,25 +1,39 @@
+import { HTTP_METHODS } from '@/constants/httpMethods';
+import httpRequest from '@/utils/httpRequest';
 import { useState } from 'react';
 
-const ChatInput = () => {
+const ChatInput = ({chatId, refresh}) => {
   const [message, setMessage] = useState('');
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedFile, setSelectedFile] = useState();
 
   const handleFileChange = (e) => {
-    const files = e.target.files;
-    setSelectedFiles([...selectedFiles, ...files]);
+    const files = e.target.files[0];
+    setSelectedFile(files);
   };
 
-  const handleSendMessage = () => {
-    if (message.trim() !== '' || (selectedFiles && selectedFiles.length > 0)) {
+  const handleSendMessage = async () => {
+    if (message.trim() !== '' || (selectedFile)) {
       console.log('Sending Message:', message);
-
-      if (selectedFiles) {
-        console.log('Sending Documents:', selectedFiles.map(file => file.name));
+      const formData = new FormData()
+      if (message){
+          formData.append("content",message)
+        }
+        if(selectedFile) {
+          formData.append("document",selectedFile)
       }
+      
 
+      const { success, message:responseMessage, data } = await httpRequest(`/api/chats/${chatId}`, HTTP_METHODS.PUT, formData, true);
+            if (success) {
+                refresh()
+            } else {
+            alert(responseMessage);
+        }
+
+     
       // Clear the input fields after sending
       setMessage('');
-      setSelectedFiles([]);
+      setSelectedFile();
     }
   };
 
@@ -43,17 +57,14 @@ const ChatInput = () => {
           type="file"
           onChange={handleFileChange}
           className="hidden"
-          multiple
+          accept='image/*'
         />
 
         {/* Display selected file names */}
-        {selectedFiles.length > 0 && (
+        {selectedFile && (
           <div className="text-sm mt-1">
-            <span>Selected Files:</span>
             <ul className="list-disc pl-4">
-              {selectedFiles.map(file => (
-                <li key={file.name}>{file.name}</li>
-              ))}
+                <li key={selectedFile.name}>{selectedFile.name}</li>
             </ul>
           </div>
         )}

@@ -68,8 +68,12 @@ const DashboardClientProfile = () => {
   }
 
   const contact = async (id) => {
-    const chat_id = 123;
-    router.push(`/dashboard/chat/${chat_id}`)
+    const { success, message, data } = await httpRequest("/api/chats", HTTP_METHODS.POST,{serviceProviderId:id});
+      if (success) {
+        router.push(`/dashboard/chat/${data.chatId}`)
+      } else {
+        alert(message);
+      }    
   }
 
   return (
