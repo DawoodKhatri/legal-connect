@@ -1,13 +1,14 @@
 import { Schema, model, models } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { USER_ROLES } from "@/constants/userRoles";
 
 const { String, Number, Boolean, ObjectId } = Schema.Types;
 
 const adminSchema = new Schema(
   {
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: true, select: false  },
+    email: { type: String, required: true, unique: true, select: false },
     password: { type: String, required: true, select: false },
   },
   { versionKey: false }
@@ -25,7 +26,10 @@ adminSchema.methods.matchPassword = async function (password) {
 };
 
 adminSchema.methods.generateToken = function () {
-  return jwt.sign({ _id: this._id }, process.env.JWT_SECRET);
+  return jwt.sign(
+    { _id: this._id, role: USER_ROLES.admin },
+    process.env.JWT_SECRET
+  );
 };
 
 const Admin = models.Admin || model("Admin", adminSchema);

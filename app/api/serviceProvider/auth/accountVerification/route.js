@@ -8,7 +8,7 @@ import { VERIFICATION_STATUS } from "@/constants/verificationStatus";
 
 export const POST = async (req) => {
   try {
-    const serviceProviderId = await checkAuth(req);
+    const { _id: serviceProviderId } = await checkAuth(req);
     if (!serviceProviderId) return errorResponse(403, "Please login first");
 
     await connectDB();

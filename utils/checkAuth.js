@@ -5,9 +5,9 @@ export default async (req) => {
     const token = req.cookies.get("token")?.value;
     if (!token) return null;
 
-    let { _id } = jwt.verify(token, process.env.JWT_SECRET);
-    return _id;
+    let { _id, role } = jwt.verify(token, process.env.JWT_SECRET);
+    return { _id, role };
   } catch (error) {
-    return null;
+    return { _id: null, role: null };
   }
 };
