@@ -7,7 +7,7 @@ import { errorResponse, successResponse } from "@/utils/sendResponse";
 
 export const GET = async (req, { params: { serviceProviderId } }) => {
   try {
-    const adminId = await checkAuth(req);
+    const { _id: adminId } = await checkAuth(req);
     if (!adminId) return errorResponse(403, "Please login first");
 
     await connectDB();
@@ -40,7 +40,7 @@ export const GET = async (req, { params: { serviceProviderId } }) => {
 
 export const PATCH = async (req, { params: { serviceProviderId } }) => {
   try {
-    const adminId = await checkAuth(req);
+    const { _id: adminId } = await checkAuth(req);
     if (!adminId) return errorResponse(403, "Please login first");
 
     await connectDB();
@@ -75,7 +75,7 @@ export const PATCH = async (req, { params: { serviceProviderId } }) => {
 
 export const PUT = async (req, { params: { serviceProviderId } }) => {
   try {
-    const adminId = await checkAuth(req);
+    const { _id: adminId } = await checkAuth(req);
     if (!adminId) return errorResponse(403, "Please login first");
 
     await connectDB();

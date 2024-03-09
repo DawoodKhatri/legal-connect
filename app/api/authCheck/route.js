@@ -6,22 +6,15 @@ import checkAuth from "@/utils/checkAuth";
 import { errorResponse, successResponse } from "@/utils/sendResponse";
 export const GET = async (req) => {
   try {
-    const userId = await checkAuth(req);
-    if (!userId) return errorResponse(403, "Logged out");
+    const { _id: userId, role } = await checkAuth(req);
+    if (!userId || !role) return errorResponse(403, "Logged out");
 
-    const UserRoleModels = [Admin, ServiceProvider, Client];
     let user;
-    let role;
 
-    for (const Model of UserRoleModels) {
-      user = await Model.findById(userId);
-      if (user) {
-        if (Model === Admin) role = USER_ROLES.admin;
-        if (Model === ServiceProvider) role = USER_ROLES.serviceProvider;
-        if (Model === Client) role = USER_ROLES.client;
-        break;
-      }
-    }
+    if (role === USER_ROLES.admin) user = await Admin.findById(userId);
+    if (role === USER_ROLES.serviceProvider)
+      user = await ServiceProvider.findById(userId);
+    if (role === USER_ROLES.client) user = await Client.findById(userId);
 
     if (!user) {
       const response = errorResponse(403, "Logged out");

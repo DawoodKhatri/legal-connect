@@ -1,11 +1,14 @@
 import { Schema, model, models } from "mongoose";
 import Document from "@/models/document";
+import Chat from "@/models/chat";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { VERIFICATION_STATUS } from "@/constants/verificationStatus";
+import { USER_ROLES } from "@/constants/userRoles";
 
 const { String, Number, Boolean, ObjectId } = Schema.Types;
 Document;
+Chat;
 
 const serviceProviderSchema = new Schema(
   {
@@ -24,6 +27,7 @@ const serviceProviderSchema = new Schema(
       status: { type: String, default: VERIFICATION_STATUS.Incomplete },
       message: { type: String },
     },
+    chats: [{ type: ObjectId, ref: "Chat" }],
   },
   { versionKey: false }
 );
@@ -40,7 +44,10 @@ serviceProviderSchema.methods.matchPassword = async function (password) {
 };
 
 serviceProviderSchema.methods.generateToken = function () {
-  return jwt.sign({ _id: this._id }, process.env.JWT_SECRET);
+  return jwt.sign(
+    { _id: this._id, role: USER_ROLES.serviceProvider },
+    process.env.JWT_SECRET
+  );
 };
 
 const ServiceProvider =
