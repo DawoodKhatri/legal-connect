@@ -49,6 +49,7 @@ const Navbar = () => {
               </Link>
             </li>
           ))}
+
         </ul>
         <div
           onClick={() => setOpen(!open)}
@@ -95,13 +96,36 @@ const Navbar = () => {
                 </div>
               </>
             )}
+
             {isUserLoggedIn && (
-              <button
-                className="font-semibold p-2 mr-[-6px] bg-primary-navy rounded-xl text-white text-xl md:ml-7 hover:shadow-xl"
-                onClick={logout}
-              >
-                Log out
-              </button>
+              <>
+              <li className="md:ml-8 text-xl md:my-0 my-7">
+                <Link
+                  href="/dashboard/profile"
+                  className="font-semibold text-primary-navy hover:text-[#7f6abe] duration-500"
+                  onClick={() => setOpen(false)}
+                >
+                  Profile
+                </Link>
+              </li>
+              <li className="md:ml-8 text-xl md:my-0 my-7">
+                <Link
+                  href="/dashboard/chat"
+                  className="font-semibold text-primary-navy hover:text-[#7f6abe] duration-500"
+                  onClick={() => setOpen(false)}
+                >
+                  Messages
+                </Link>
+              </li>
+                {/* <Link href="/dashboard/profile" className="font-semibold text-primary-navy hover:text-[#7f6abe] duration-500" >Profile</Link>
+                <Link href="/dashboard/chat" className="font-semibold text-primary-navy hover:text-[#7f6abe] duration-500">Messages</Link> */}
+                <button
+                  className="font-semibold p-2 mr-[-6px] bg-primary-navy rounded-xl text-white text-xl md:ml-7 hover:shadow-xl"
+                  onClick={logout}
+                >
+                  Log out
+                </button>
+              </>
             )}
           </ul>
         )}
@@ -121,12 +145,25 @@ const Navbar = () => {
           </div>
         )}
         {isUserLoggedIn && (
-          <button
-            className="hidden md:block font-semibold p-2 mr-[-6px] bg-primary-navy rounded-xl text-white text-xl md:ml-7 hover:shadow-xl"
-            onClick={logout}
-          >
-            Log out
-          </button>
+          <div className="flex">
+
+            <Link href="/dashboard/profile">
+              <button className="font-semibold p-2 mr-[-6px] bg-primary-lightGray rounded-xl text-primary-navy text-xl md:ml-7 hover:shadow-xl">
+                Profile
+              </button>
+            </Link>
+            <Link href="/dashboard/chat">
+              <button className="font-semibold p-2 mr-[-6px] bg-primary-lightGray rounded-xl text-primary-navy text-xl md:ml-7 hover:shadow-xl">
+                Messages
+              </button>
+            </Link>
+            <button
+              className="hidden md:block font-semibold p-2 mr-[-6px] bg-primary-navy rounded-xl text-white text-xl md:ml-7 hover:shadow-xl"
+              onClick={logout}
+            >
+              Log out
+            </button>
+          </div>
         )}
       </div>
     </div>
