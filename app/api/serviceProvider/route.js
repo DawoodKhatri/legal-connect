@@ -6,7 +6,7 @@ import { errorResponse, successResponse } from "@/utils/sendResponse";
 
 export const GET = async (req) => {
   try {
-    const serviceProviderId = await checkAuth(req);
+    const { _id: serviceProviderId } = await checkAuth(req);
     if (!serviceProviderId) return errorResponse(403, "Please login first");
 
     await connectDB();

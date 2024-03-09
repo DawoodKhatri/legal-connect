@@ -3,7 +3,7 @@ import { errorResponse, successResponse } from "@/utils/sendResponse";
 
 export const POST = async (req) => {
   try {
-    const userId = await checkAuth(req);
+    const { _id: userId } = await checkAuth(req);
     if (!userId) return errorResponse(403, "Please login first");
 
     const response = successResponse(200, "Logout Successful");

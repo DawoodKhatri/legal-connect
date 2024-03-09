@@ -11,7 +11,7 @@ export const GET = async (req) => {
     if (!Object.values(VERIFICATION_STATUS).includes(status))
       return errorResponse(400, "Invalid Verification Status");
 
-    const adminId = await checkAuth(req);
+    const { _id: adminId } = await checkAuth(req);
     if (!adminId) return errorResponse(403, "Please login first");
 
     const admin = await Admin.findById(adminId);
