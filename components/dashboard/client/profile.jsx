@@ -83,10 +83,6 @@ const DashboardClientProfile = () => {
       alert(message);
     }
   }
-  const isFiltered = (data) => {
-    console.log(data);
-    return true;
-  }
 
   const contact = async (id) => {
     const { success, message, data } = await httpRequest("/api/chats", HTTP_METHODS.POST,{serviceProviderId:id});
