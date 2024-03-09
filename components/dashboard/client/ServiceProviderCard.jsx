@@ -44,14 +44,9 @@ export default function ServiceProviderCard(props) {
 
         <hr className="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700"></hr>
         <div className="flex justify-center">
-          <Link
-            href={"/chat"}
-            className="text-primary underline"
-          >
-            <button className="bg-primary-navy text-primary-light hover:shadow-xl ease-in-out mt-4 py-2 rounded-md font-bold px-2">
+            <button onClick={props.contact} className="bg-primary-navy text-primary-light hover:shadow-xl ease-in-out mt-4 py-2 rounded-md font-bold px-2">
               Contact
             </button>
-          </Link>
         </div>
       </div>
     </div>

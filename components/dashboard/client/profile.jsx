@@ -9,11 +9,13 @@ import { CiFilter } from "react-icons/ci";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 
 
 
 const DashboardClientProfile = () => {
+  const router = useRouter()
   const [currentSkill, setCurrentSkill] = useState("");
   const [serviceProviders, setServiceProviders] = useState([]);
   const [skills, setSkills] = useState([
@@ -63,6 +65,11 @@ const DashboardClientProfile = () => {
   const isFiltered = (data) => {
     console.log(data);
     return true;
+  }
+
+  const contact = async (id) => {
+    const chat_id = 123;
+    router.push(`/dashboard/chat/${chat_id}`)
   }
 
   return (
@@ -143,7 +150,7 @@ const DashboardClientProfile = () => {
         <h1 className="text-center text-3xl py-4 md:text-4xl text-primary-navy font-semibold ">Verified Lawyers</h1>
         <div className="flex justify-center flex-col">
           
-          {serviceProviders.filter((data)=> isFiltered(data)).map((data) => <ServiceProviderCard key={data["_id"]} serviceProvidersDetail={data} ></ServiceProviderCard>)}
+          {serviceProviders.filter((data)=> isFiltered(data)).map((data) => <ServiceProviderCard key={data["_id"]} serviceProvidersDetail={data} contact={()=>contact(data["_id"])} ></ServiceProviderCard>)}
         </div>
       </div>
     </div>
