@@ -12,25 +12,7 @@ import Link from "next/link";
 
 
 
-function valuetext(value) {
-  return `${value}°C`;
-}
-const handleCurrentSkill = (e) => {
-  setCurrentSkill(e.target.value);
-};
 
-const handleSkills = (deleteSkill) => {
-  setSkills((currentSkills) => {
-    return currentSkills.filter((skill) => skill != deleteSkill);
-  });
-};
-
-const addSkill = (skill) => {
-  if (skill.trim() !== "") {
-    setSkills([...skills, skill]);
-    setCurrentSkill("");
-  }
-};
 const DashboardClientProfile = () => {
   const [currentSkill, setCurrentSkill] = useState("");
   const [serviceProviders, setServiceProviders] = useState([]);
@@ -45,9 +27,30 @@ const DashboardClientProfile = () => {
     // "ExpressJS",
     // "MongoDB",
   ]);
+  
   useEffect(() => {
     getVerifiedServiceProviders()
   }, []);
+
+  function valuetext(value) {
+    return `${value}°C`;
+  }
+  const handleCurrentSkill = (e) => {
+    setCurrentSkill(e.target.value);
+  };
+  
+  const handleSkills = (deleteSkill) => {
+    setSkills((currentSkills) => {
+      return currentSkills.filter((skill) => skill != deleteSkill);
+    });
+  };
+  
+  const addSkill = (skill) => {
+    if (skill.trim() !== "") {
+      setSkills([...skills, skill]);
+      setCurrentSkill("");
+    }
+  };
 
   const getVerifiedServiceProviders = async () => {
     const { success, message, data } = await httpRequest("/api/client/serviceProviders", HTTP_METHODS.GET);
@@ -56,6 +59,10 @@ const DashboardClientProfile = () => {
     } else {
       alert(message);
     }
+  }
+  const isFiltered = (data) => {
+    console.log(data);
+    return true;
   }
 
   return (
@@ -135,7 +142,8 @@ const DashboardClientProfile = () => {
       <div className="flex-col basis-[80%]">
         <h1 className="text-center text-3xl py-4 md:text-4xl text-primary-navy font-semibold ">Verified Lawyers</h1>
         <div className="flex justify-center flex-col">
-          {serviceProviders.map((data) => <ServiceProviderCard key={data["_id"]} serviceProvidersDetail={data} ></ServiceProviderCard>)}
+          
+          {serviceProviders.filter((data)=> isFiltered(data)).map((data) => <ServiceProviderCard key={data["_id"]} serviceProvidersDetail={data} ></ServiceProviderCard>)}
         </div>
       </div>
     </div>
