@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { HTTP_METHODS } from "@/constants/httpMethods";
 import httpRequest from "@/utils/httpRequest";
 import ServiceProviderCard from "@/components/dashboard/client/ServiceProviderCard";
@@ -19,17 +19,38 @@ const DashboardClientProfile = () => {
   const [currentSkill, setCurrentSkill] = useState("");
   const [serviceProviders, setServiceProviders] = useState([]);
   const [skills, setSkills] = useState([
-    "C++",
-    "Java",
-    "HTML",
-    "CSS",
+    // "C++",
+    // "Java",
+    // "HTML",
+    // "CSS",
     // "JavaScript",
     // "ReactJS",
     // "NodeJS",
     // "ExpressJS",
     // "MongoDB",
   ]);
-  
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [experience, setExperience] = useState(1);
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleExperienceChange = (_, value) => {
+    setExperience(value);
+  };
+
+  const isFiltered = (data) => {
+    const matchesSearch = data.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesExperience = data.experience >= experience;
+
+    // Assuming that data.skills is an array of skills for each lawyer
+    const matchesSkills = skills.length === 0 || skills.every(skill => data.skills.includes(skill));
+
+    return matchesSearch && matchesExperience && matchesSkills;
+  };
+
   useEffect(() => {
     getVerifiedServiceProviders()
   }, []);
@@ -40,13 +61,13 @@ const DashboardClientProfile = () => {
   const handleCurrentSkill = (e) => {
     setCurrentSkill(e.target.value);
   };
-  
+
   const handleSkills = (deleteSkill) => {
     setSkills((currentSkills) => {
       return currentSkills.filter((skill) => skill != deleteSkill);
     });
   };
-  
+
   const addSkill = (skill) => {
     if (skill.trim() !== "") {
       setSkills([...skills, skill]);
@@ -61,10 +82,6 @@ const DashboardClientProfile = () => {
     } else {
       alert(message);
     }
-  }
-  const isFiltered = (data) => {
-    console.log(data);
-    return true;
   }
 
   const contact = async (id) => {
@@ -82,7 +99,11 @@ const DashboardClientProfile = () => {
       <div className="flex-col basis-[20%]">
         <div className='flex items-center justify-center mt-6'>
           <AiOutlineSearch className='text-[1rem] relative left-52 cursor-pointer' />
-          <input type="text" placeholder='Search...' className='text-[1rem] bg-primary-lightGray sm:p-[.4em] sm:px-[.8em] rounded-xl outline-none h-12' />
+          <input type="text"
+            placeholder='Search...'
+            className='text-[1rem] bg-primary-lightGray sm:p-[.4em] sm:px-[.8em] rounded-xl outline-none h-12'
+            value={searchTerm}
+            onChange={handleSearch} />
         </div>
         <h1 className="flex justify-center my-6 text-xl font-semibold">~~~~~OR~~~~~</h1>
         <h1 className="flex justify-center my-6 text-2xl text-primary-navy font-bold items-center"><CiFilter />Filter</h1>
@@ -95,6 +116,8 @@ const DashboardClientProfile = () => {
               getAriaValueText={valuetext}
               valueLabelDisplay="on"
               shiftStep={1}
+              value={experience}
+              onChange={handleExperienceChange}
               step={1}
               min={1}
               max={10}
@@ -158,7 +181,7 @@ const DashboardClientProfile = () => {
         </div>
       </div>
     </div>
-    )
+  )
 };
 
 export default DashboardClientProfile;
