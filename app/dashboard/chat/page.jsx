@@ -25,8 +25,8 @@ function ChatsPage() {
 
   return (
     <div>
-      {chats.map(({_id,user})=>
-      <Link href={`/dashboard/chat/${_id}`}>
+      {chats.map(({_id,user},i)=>
+      <Link key={i} href={`/dashboard/chat/${_id}`}>
         <ChatCard {...user} />
       </Link>
        )}
